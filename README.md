@@ -49,5 +49,10 @@ EOF
     - test09_pointer → 15, 15  
     - test10_pointer_chain → 6, 5, 6, 5
 
+## 플랫폼 메모
+- macOS(Apple clang, flex, bison) 환경에서 작성·빌드 확인.  
+- 리눅스도 동일 의존성(gcc/clang, flex, bison)만 갖추면 동작.  
+- Windows는 WSL/MSYS2 등 유닉스 호환 환경에서 빌드 권장.
+
 ## 문서
 - `doc/overview.md`: 언어 설계 개요, 문법 요약, 구조, 구현/제한 사항
