@@ -40,7 +40,7 @@ expr      =
   | "(" expr ")" ;
 ```
 토큰/렉싱:
-- 키워드: `print`, `input`, `if`, `else`, `while`, `for`, `in`, `range`, `return`, `break`, `continue`
+- 키워드: `def`, `print`, `input`, `if`, `else`, `while`, `for`, `in`, `range`, `return`, `break`, `continue`
 - 연산자: `+ - * / % < > <= >= == != && || ! &`
 - 식별자/숫자, 주석 `# ...`
 - 줄 단위 들여쓰기 계산으로 `NEWLINE`, `INDENT`, `DEDENT` 생성 → 블록 표현.
@@ -73,7 +73,6 @@ expr      =
 - 테스트: `tests/` 10개 샘플, `run_tests.sh`로 일괄 실행.
 
 ## 5. 미구현/제한 사항
-- 함수/프로시저 정의·호출 미지원.
 - 타입 한정: 정수만, 문자열/리스트 등 복합 타입 없음.
 - 포인터: 실제 주소 아님, 연산 제한적.
 - 오류 메시지: 기본 `parse error`, 소스 위치/친절도 부족.
