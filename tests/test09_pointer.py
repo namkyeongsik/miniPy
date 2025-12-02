@@ -1,0 +1,5 @@
+x = 10
+p = &x
+*p = *p + 5
+print(x)
+print(*p)
