@@ -37,6 +37,8 @@ typedef enum {
     AST_BREAK,      // break;
     AST_CONTINUE,   // continue;
     AST_RETURN      // return expr;
+    ,AST_FUNC_DEF    // def name(params): suite
+    ,AST_CALL        // name(args)
 } ASTType;
 
 
@@ -77,5 +79,7 @@ AST* ast_while(AST* cond, AST* body, AST* step);
 AST* ast_break(void);
 AST* ast_continue(void);
 AST* ast_return(AST* expr);
+AST* ast_func_def(char* name, AST* params, AST* body);
+AST* ast_call(char* name, AST* args);
 
 #endif // AST_H

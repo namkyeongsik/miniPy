@@ -131,6 +131,23 @@ AST* ast_return(AST* expr) {
     return n;
 }
 
+AST* ast_func_def(char* name, AST* params, AST* body) {
+    AST* n = ast_new(AST_FUNC_DEF);
+    if (!n) return NULL;
+    n->name = name;
+    n->left = params; // param list (AST_STMT_LIST of AST_VAR)
+    n->right = body;  // suite
+    return n;
+}
+
+AST* ast_call(char* name, AST* args) {
+    AST* n = ast_new(AST_CALL);
+    if (!n) return NULL;
+    n->name = name;
+    n->left = args; // args as AST_STMT_LIST of expr
+    return n;
+}
+
 void ast_free(AST* node) {
     if (!node) return;
     ast_free(node->left);

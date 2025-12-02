@@ -31,6 +31,7 @@ EOF
 - 파이썬식 들여쓰기(NEWLINE/INDENT/DEDENT), 동적 정수 타입
 - 산술 `+ - * / %`, 비교 `< > <= >= == !=`, 논리 `&& || !`
 - 제어: `if / if-else`, `while`, `for x in range(start, end[, step])`, `break`, `continue`, `return`
+- 함수: `def name(params): suite`, `name(args)` 호출, `return` 값
 - I/O: `print(expr)`, `input()` (대입과 함께 사용)
 - 포인터: `&name`, `*expr`, `*expr = expr` (셀 핸들 방식)
 
@@ -47,7 +48,8 @@ EOF
     - test07_break → 3  
     - test08_continue_for → 9  
     - test09_pointer → 15, 15  
-    - test10_pointer_chain → 6, 5, 6, 5
+    - test10_pointer_chain → 6, 5, 6, 5  
+    - test11_func → 5
 
 ## 플랫폼 메모
 - macOS(Apple clang, flex, bison) 환경에서 작성·빌드 확인.  

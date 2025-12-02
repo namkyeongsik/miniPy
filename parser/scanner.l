@@ -46,6 +46,7 @@ static int calc_indent(const char* text, int len) {
 <INITIAL>"for"                  { return FOR_KW; }
 <INITIAL>"in"                   { return IN_KW; }
 <INITIAL>"range"                { return RANGE_KW; }
+<INITIAL>"def"                  { return DEF_KW; }
 <INITIAL>"return"               { return RETURN_KW; }
 <INITIAL>"break"                { return BREAK_KW; }
 <INITIAL>"continue"             { return CONTINUE_KW; }

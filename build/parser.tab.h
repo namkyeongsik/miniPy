@@ -52,16 +52,17 @@
      RETURN_KW = 268,
      BREAK_KW = 269,
      CONTINUE_KW = 270,
-     NEWLINE = 271,
-     INDENT = 272,
-     DEDENT = 273,
-     LE = 274,
-     GE = 275,
-     EQ = 276,
-     NE = 277,
-     AND = 278,
-     OR = 279,
-     UMINUS = 280
+     DEF_KW = 271,
+     NEWLINE = 272,
+     INDENT = 273,
+     DEDENT = 274,
+     LE = 275,
+     GE = 276,
+     EQ = 277,
+     NE = 278,
+     AND = 279,
+     OR = 280,
+     UMINUS = 281
    };
 #endif
 /* Tokens.  */
@@ -78,16 +79,17 @@
 #define RETURN_KW 268
 #define BREAK_KW 269
 #define CONTINUE_KW 270
-#define NEWLINE 271
-#define INDENT 272
-#define DEDENT 273
-#define LE 274
-#define GE 275
-#define EQ 276
-#define NE 277
-#define AND 278
-#define OR 279
-#define UMINUS 280
+#define DEF_KW 271
+#define NEWLINE 272
+#define INDENT 273
+#define DEDENT 274
+#define LE 275
+#define GE 276
+#define EQ 277
+#define NE 278
+#define AND 279
+#define OR 280
+#define UMINUS 281
 
 
 
@@ -101,7 +103,7 @@ typedef union YYSTYPE
     AST*  node;
 }
 /* Line 1529 of yacc.c.  */
-#line 105 "build/parser.tab.h"
+#line 107 "build/parser.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

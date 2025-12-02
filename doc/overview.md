@@ -66,6 +66,7 @@ expr      =
 - 문법: 들여쓰기 기반 파이썬풍, 동적 정수 타입.
 - 연산: 산술 `+ - * / %`, 비교 `< > <= >= == !=`, 논리 `&& || !`.
 - 제어문: `if / if-else`, `while`, `for x in range(start, end[, step])`, `break`, `continue`, `return`.
+- 함수: `def name(params): suite`, `name(args)` 호출, `return` 값 전달 (전역 함수 테이블 기반).
 - I/O: `print(expr)`, `input()`(대입과 함께).
 - 포인터: `&name`, `*expr`, `*expr = expr` (셀 핸들 모델).
 - 스코프: 블록 스코프/섀도잉 지원.

@@ -22,6 +22,7 @@ void yyerror(const char* s);
 %token WHILE_KW
 %token FOR_KW IN_KW RANGE_KW
 %token RETURN_KW BREAK_KW CONTINUE_KW
+%token DEF_KW
 %token NEWLINE INDENT DEDENT
 %token LE GE EQ NE AND OR
 
@@ -34,7 +35,7 @@ void yyerror(const char* s);
 %right UMINUS
 %right '!' '&'
 
-%type <node> program stmt_list stmt simple_stmt compound_stmt suite expr opt_expr
+%type <node> program stmt_list stmt simple_stmt compound_stmt suite expr opt_expr param_list arg_list func_def
 
 %%
 
@@ -51,6 +52,10 @@ stmt_list
       { $$ = $1; }
     | stmt_list stmt
       { $$ = ast_stmt_list($1, $2); }
+    | stmt_list func_def
+      { $$ = ast_stmt_list($1, $2); }
+    | func_def
+      { $$ = $1; }
     ;
 
 stmt
@@ -67,6 +72,10 @@ simple_stmt
       { $$ = ast_assign(ast_var($1), $3); }
     | '*' expr '=' expr
       { $$ = ast_assign(ast_deref($2), $4); }
+    | IDENT '(' arg_list ')'
+      { $$ = ast_call($1, $3); }
+    | IDENT '(' ')' 
+      { $$ = ast_call($1, NULL); }
     | PRINT_KW '(' expr ')'
       { $$ = ast_printf($3); }
     | IDENT '=' INPUT_KW '(' ')'
@@ -126,6 +135,10 @@ expr
       { $$ = ast_int($1); }
     | IDENT
       { $$ = ast_var($1); }
+    | IDENT '(' arg_list ')'
+      { $$ = ast_call($1, $3); }
+    | IDENT '(' ')'
+      { $$ = ast_call($1, NULL); }
 
     | expr '+' expr
       { $$ = ast_bin(AST_ADD, $1, $3); }
@@ -167,6 +180,27 @@ expr
       { $$ = ast_bin(AST_SUB, ast_int(0), $2); }
     | '(' expr ')'
       { $$ = $2; }
+    ;
+
+func_def
+    : DEF_KW IDENT '(' param_list ')' ':' suite
+      { $$ = ast_func_def($2, $4, $7); }
+    | DEF_KW IDENT '(' ')' ':' suite
+      { $$ = ast_func_def($2, NULL, $6); }
+    ;
+
+param_list
+    : IDENT
+      { $$ = ast_var($1); }
+    | param_list ',' IDENT
+      { $$ = ast_stmt_list($1, ast_var($3)); }
+    ;
+
+arg_list
+    : expr
+      { $$ = $1; }
+    | arg_list ',' expr
+      { $$ = ast_stmt_list($1, $3); }
     ;
 
 opt_expr

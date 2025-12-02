@@ -38,6 +38,15 @@ typedef struct {
 static Frame frames[64];
 static int frame_top = 0;
 
+typedef struct {
+    char* name;
+    AST* params; // AST_STMT_LIST of AST_VAR
+    AST* body;   // suite AST
+} FuncDef;
+
+static FuncDef funcs[128];
+static int func_count = 0;
+
 static void push_frame(void) {
     if (frame_top < 64) {
         frames[frame_top].count = 0;
@@ -112,6 +121,51 @@ static ExecResult res_return(Value* v){ return (ExecResult){RES_RETURN, v}; }
 
 static Value* eval_expr(AST* node);
 static ExecResult exec_stmt(AST* node);
+static ExecResult exec_func(FuncDef* f, AST* args);
+
+static ExecResult exec_func(FuncDef* f, AST* args) {
+    push_frame();
+
+    AST* p = f->params;
+    AST* a = args;
+    while (p || a) {
+        if (!p) break;
+
+        char* pname = NULL;
+        AST* pnext = NULL;
+        if (p->type == AST_VAR) {
+            pname = p->name;
+            pnext = NULL;
+        } else if (p->type == AST_STMT_LIST && p->left && p->left->type == AST_VAR) {
+            pname = p->left->name;
+            pnext = p->right;
+        }
+
+        AST* arg_expr = NULL;
+        AST* anext = NULL;
+        if (a) {
+            if (a->type == AST_STMT_LIST) {
+                arg_expr = a->left;
+                anext = a->right;
+            } else {
+                arg_expr = a;
+                anext = NULL;
+            }
+        }
+
+        if (pname) {
+            Value* v = arg_expr ? eval_expr(arg_expr) : value_int(0);
+            assign_var(pname, v);
+        }
+
+        p = pnext;
+        a = anext;
+    }
+
+    ExecResult r = exec_stmt(f->body);
+    pop_frame();
+    return r;
+}
 
 static Value* eval_expr(AST* node) {
     if (!node) return value_int(0);
@@ -228,6 +282,23 @@ static Value* eval_expr(AST* node) {
         return value_int(n);
     }
 
+    case AST_CALL: {
+        FuncDef* f = NULL;
+        for (int i = 0; i < func_count; ++i) {
+            if (strcmp(funcs[i].name, node->name) == 0) {
+                f = &funcs[i];
+                break;
+            }
+        }
+        if (!f) {
+            fprintf(stderr, "NameError: function %s not defined\n", node->name);
+            return value_int(0);
+        }
+        ExecResult r = exec_func(f, node->left);
+        if (r.type == RES_RETURN && r.val) return r.val;
+        return value_int(0);
+    }
+
     default:
         return value_int(0);
     }
@@ -237,6 +308,17 @@ static ExecResult exec_stmt(AST* node) {
     if (!node) return res_normal();
 
     switch (node->type) {
+    case AST_FUNC_DEF:
+        if (func_count >= 128) {
+            fprintf(stderr, "function table overflow\n");
+            return res_normal();
+        }
+        funcs[func_count].name   = node->name;
+        funcs[func_count].params = node->left;
+        funcs[func_count].body   = node->right;
+        func_count++;
+        return res_normal();
+
     case AST_STMT_LIST:
         {
             ExecResult r = exec_stmt(node->left);
@@ -310,6 +392,7 @@ static ExecResult exec_stmt(AST* node) {
 }
 
 int interpret(AST* root) {
+    func_count = 0;
     push_frame();
     ExecResult r = exec_stmt(root);
     int exit_code = 0;
