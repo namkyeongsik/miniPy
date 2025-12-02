@@ -41,4 +41,4 @@ $(TARGET): $(OBJS)
 clean:
 	rm -rf $(BUILD_DIR) $(SRC_DIR)/*.o $(TARGET)
 
-.PHONY: all clean prog
+.PHONY: all clean

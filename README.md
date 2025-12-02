@@ -34,7 +34,7 @@ EOF
 - I/O: `print(expr)`, `input()` (대입과 함께 사용)
 - 포인터: `&name`, `*expr`, `*expr = expr` (셀 핸들 방식)
 
-## 테스트
+## 테스트(예제 코드)
 - 개별 실행: `./minipy tests/test01_assign.py` 등
 - 전체 실행: `./run_tests.sh` (빌드 후)
   - 주요 기대 출력:  
